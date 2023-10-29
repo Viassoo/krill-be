@@ -11,11 +11,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
-
 builder.Services.Configure<KrillDatabaseSettings>(
 	builder.Configuration.GetSection("ConnectionString")
 	);
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
