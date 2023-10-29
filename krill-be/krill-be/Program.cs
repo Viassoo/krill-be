@@ -1,3 +1,7 @@
+using krill_be.Models;
+using MongoDB.Driver;
+using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,6 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+builder.Services.Configure<KrillDatabaseSettings>(
+	builder.Configuration.GetSection("ConnectionString")
+	);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
