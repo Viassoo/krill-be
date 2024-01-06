@@ -1,4 +1,5 @@
 using krill_be.Models;
+using krill_be.Services;
 using MongoDB.Driver;
 using System.Configuration;
 
@@ -12,8 +13,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<KrillDatabaseSettings>(
-	builder.Configuration.GetSection("ConnectionString")
+	builder.Configuration.GetSection("KrillDatabase")
 	);
+
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
