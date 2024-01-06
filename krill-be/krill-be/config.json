@@ -1,0 +1,7 @@
+{
+  "autoCreateUsers": false,
+  "allowedMailDomains": [
+    "@gmail",
+    "@your-company"
+  ]
+}
