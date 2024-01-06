@@ -6,14 +6,14 @@ namespace krill_be.Models
 {
 	public class User : Model 
 	{
-		public string Username { get; set; }
+		public string Email { get; set; }
 		public string Password { get; set; }
 
 		public User() { }
 		public User(string username, string password)
 		{
-			this.Username = username;
-			this.Password = password;
+			Email = username;
+			Password = password;
 		}
 
 		public string hashPassword(string password)
@@ -25,7 +25,7 @@ namespace krill_be.Models
 		{
 			bool isValid = false;
 
-			if (Username != null || Username == "")
+			if (Email != null || Email == "")
 			{
 				if(Password != null || Password == "")
 				{

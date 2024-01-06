@@ -14,34 +14,41 @@ namespace krill_be.Controllers
 			_userService = userService;
 		}
 
-		[HttpGet]
-		public void getUsers()
-		{
-		}
-
-		[HttpGet("api/getuser", Name = "GetUser")]
+		[HttpGet("api/getUser", Name = "GetUser")]
 		public async Task<User?> GetUser()
 		{
-			var response = _userService.GetOneAsync();
-			return response.Result;
+			var response = await _userService.GetOneAsync();
+			return response;
 		}
 
-		[HttpPost]
+		[HttpPost("api/register", Name = "RegisterUser")]
 		public async Task<IActionResult> register([FromBody] User user)
 		{
 			if(user.areRegistrationFieldsCompiled())
 			{
-				return Ok();
+				var isUserFound = await _userService.checkIfUserExistByEmail(user.Email);
+
+				if (!isUserFound)
+				{
+					await _userService.CreateOneAync(user);
+					return Ok("User registered successfully");
+				}
+				else
+				{
+					return BadRequest("Email already associated with a user");
+				}
 			}
 			else
 			{
-				return NoContent();
+				return NotFound("Username and password are not filled correctly");
 			}
 		}
 
+		[Route("api/login", Name = "Login")]
 		[HttpPost]
 		public void login() { }
 
+		[Route("api/changePassword", Name = "ChangePassword")]
 		[HttpPut]
 		public async Task<IActionResult> changePassword([FromBody] string oldPassword) 
 		{
