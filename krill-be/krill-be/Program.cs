@@ -16,6 +16,10 @@ builder.Services.Configure<KrillDatabaseSettings>(
 	builder.Configuration.GetSection("KrillDatabase")
 	);
 
+builder.Services.Configure<LoginSettings>(
+	builder.Configuration.AddJsonFile("config.json").Build().GetSection("loginSettings")
+	);
+
 builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();

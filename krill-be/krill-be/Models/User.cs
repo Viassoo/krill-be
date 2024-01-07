@@ -1,27 +1,29 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System.Security.Cryptography;
 using MongoDB.Bson;
+using System.Text;
 
 namespace krill_be.Models
 {
 	public class User : Model 
 	{
+		[BsonRequired]
 		public string Email { get; set; }
+
+		[BsonRequired]
 		public string Password { get; set; }
 
+		public byte[]? Salt { get; set; }
+
 		public User() { }
-		public User(string username, string password)
+		public User(string email, string password, byte[] salt)
 		{
-			Email = username;
+			Email = email;
 			Password = password;
+			Salt = salt;
 		}
 
-		public string hashPassword(string password)
-		{
-			return SHA256.Create(password).ToString();
-		}
-
-		public bool areRegistrationFieldsCompiled()
+		public bool AreRegistrationFieldsFilled()
 		{
 			bool isValid = false;
 
