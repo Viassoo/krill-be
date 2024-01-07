@@ -12,18 +12,18 @@ namespace krill_be.Services
 		}
 
 		public async Task<User?> GetUserByEmail(string email) =>
-			await _collection.Find(x => x.Email == email).FirstAsync();
+			await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
 
 		public async Task<bool> checkIfUserExistByEmail(string email)
 		{
-			User? userFound = await _collection.Find(x => x.Email == email).FirstAsync();
+			User? userFound = await _collection.Find(x => x.Email == email).FirstOrDefaultAsync();
 			if (userFound != null)
 			{
-				return false;
+				return true;
 			}
 			else
 			{
-				return true;
+				return false;
 			}
 		}
 

@@ -1,7 +1,9 @@
 {
-  "autoCreateUsers": false,
-  "allowedMailDomains": [
-    "@gmail",
-    "@your-company"
-  ]
+  "loginSettings": {
+    "autoCreateUsers": false,
+    "allowedMailDomains": [
+      "@gmail",
+      "@your-company"
+    ]
+  }
 }
