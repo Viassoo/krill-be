@@ -5,6 +5,7 @@
 		public bool autoCreateUser { get; set; } = false;
 		public List<string>	allowedEmailDomains { get; set; } =  new List<string>();
 
+		public double cookieMinutesExpireTime { get; set; }
 		public LoginSettings() { }
 	}
 }

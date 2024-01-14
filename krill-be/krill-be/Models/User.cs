@@ -22,20 +22,5 @@ namespace krill_be.Models
 			Password = password;
 			Salt = salt;
 		}
-
-		public bool AreRegistrationFieldsFilled()
-		{
-			bool isValid = false;
-
-			if (Email != null || Email == "")
-			{
-				if(Password != null || Password == "")
-				{
-					isValid = true;
-				}
-			}
-
-			return isValid;
-		}
 	}
 }

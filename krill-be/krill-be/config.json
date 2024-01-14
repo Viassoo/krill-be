@@ -4,6 +4,7 @@
     "allowedMailDomains": [
       "@gmail",
       "@your-company"
-    ]
+    ],
+    "cookieMinutesExpireTime": 60
   }
 }
