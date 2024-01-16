@@ -3,6 +3,7 @@ using krill_be.Services;
 using krill_be.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -135,6 +136,7 @@ namespace krill_be.Controllers
 
 		}
 
+		[Authorize]
 		[Route("api/logout", Name = "Logout")]
 		[HttpPost]
 		public async Task<IActionResult> Logout()
@@ -143,6 +145,7 @@ namespace krill_be.Controllers
 			return Ok("Logged out correctly");
 		}
 
+		[Authorize]
 		[Route("api/changePassword", Name = "ChangePassword")]
 		[HttpPut]
 		public async Task<IActionResult> changePassword([FromBody] string oldPassword) 

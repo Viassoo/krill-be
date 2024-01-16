@@ -1,13 +1,21 @@
-using krill_be.Controllers;
 using krill_be.Models;
 using krill_be.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using MongoDB.Driver;
-using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var applicationConfig = new KrillApplicationSettings();
+builder.Configuration.GetSection("applicationSettings").Bind(applicationConfig);
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy(name: "OriginsAllowedFromJson", builder =>
+	{
+		builder.AllowAnyHeader()
+		.AllowAnyMethod()
+		.WithOrigins(applicationConfig.allowedCrossOrigins.Split(","));
+	});
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -19,7 +27,7 @@ builder.Services.Configure<KrillDatabaseSettings>(
 	);
 
 builder.Services.Configure<LoginSettings>(
-	builder.Configuration.AddJsonFile("config.json").Build().GetSection("loginSettings")
+	builder.Configuration.GetSection("loginSettings")
 	);
 
 builder.Services.AddHttpContextAccessor();
@@ -34,12 +42,24 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 		options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 		options.SlidingExpiration = true;
 		options.Cookie.Name = "krill-cookie";
-		options.AccessDeniedPath = "/Forbidden/";
+		options.Events.OnRedirectToLogin = c =>
+		{
+			c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+			return Task.FromResult<object>(null);
+		};
 	});
+
+builder.Services.AddAuthorization(options =>
+{
+	options.AddPolicy("Authentication", policy =>
+	{
+		policy.RequireAuthenticatedUser();
+	});
+});
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();
@@ -57,7 +77,6 @@ var cookiePolicyOptions = new CookiePolicyOptions
 };
 
 app.UseCookiePolicy(cookiePolicyOptions);
-
 app.MapControllers();
-
+app.UseCors("OriginsAllowedFromJson");
 app.Run();
